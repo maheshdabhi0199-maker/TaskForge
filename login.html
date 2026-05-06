@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge - Login</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <!-- google font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- main css -->
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/entry-page.css" />
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+
+<body>
+  <div class="row height-full">
+    <!-- left side -->
+    <div class="right-column login"></div>
+
+    <!-- right side -->
+    <div class="left-column flex flex-column height-full justify-center items-center">
+      <h1 class="welcoming-title">Log in to Task<span style="color: var(--pink)">Forge</span></h1>
+
+      <p class="success-message" id="success-message"></p>
+
+      <form class="form" id="login-form" autocomplete="off">
+        <label for="email" class="label">Email</label>
+        <input type="email" name="email" id="email" class="input" required placeholder="Enter your email" />
+        <p class="error-message" id="email-error"></p>
+
+        <label for="password" class="label">Password</label>
+        <div class="password-container">
+          <input type="password" name="password" id="password" class="input" required
+            placeholder="Enter your password" />
+          <button type="button" class="toggle-password" id="toggle-password">Show</button>
+        </div>
+        <p class="error-message" id="password-error"></p>
+
+        <button type="submit" class="button regular-button pink-background cta-btn" id="login-btn">
+          Log in
+        </button>
+      </form>
+      <p class="sign-up-prompt">
+        Don't have an account?
+        <a href="./signup.html" class="sign-up-link">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Check if user just registered
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('registered') === 'true') {
+        const successMsg = document.getElementById('success-message');
+        successMsg.textContent = 'Registration successful! Please log in.';
+        successMsg.classList.add('show');
+        setTimeout(() => {
+          successMsg.classList.remove('show');
+        }, 5000);
+      }
+    });
+
+    // Toggle password visibility
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+
+    // Form validation and submission
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Clear previous errors
+      emailError.classList.remove('show');
+      passwordError.classList.remove('show');
+      emailInput.classList.remove('error');
+      passwordInput.classList.remove('error');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      let isValid = true;
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        emailError.textContent = 'Please enter a valid email address';
+        emailError.classList.add('show');
+        emailInput.classList.add('error');
+        isValid = false;
+      }
+
+      // Password validation
+      if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters';
+        passwordError.classList.add('show');
+        passwordInput.classList.add('error');
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Get users from memory (simulating database)
+      const users = JSON.parse(sessionStorage.getItem('taskforge_users') || '[]');
+
+      // Find user
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (user) {
+        // Store logged in user
+        sessionStorage.setItem('taskforge_current_user', JSON.stringify(user));
+
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } else {
+        // Check if email exists
+        const emailExists = users.find(u => u.email === email);
+        if (emailExists) {
+          passwordError.textContent = 'Incorrect password';
+          passwordError.classList.add('show');
+          passwordInput.classList.add('error');
+        } else {
+          emailError.textContent = 'No account found with this email';
+          emailError.classList.add('show');
+          emailInput.classList.add('error');
+        }
+      }
+    });
+
+    // Clear error on input
+    emailInput.addEventListener('input', () => {
+      emailError.classList.remove('show');
+      emailInput.classList.remove('error');
+    });
+
+    passwordInput.addEventListener('input', () => {
+      passwordError.classList.remove('show');
+      passwordInput.classList.remove('error');
+    });
+  </script>
+</body>
+
+</html>

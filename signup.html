@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge - Sign Up</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <!-- google font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- main css -->
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/entry-page.css" />
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+
+<body>
+  <div class="row height-full">
+    <!-- left side -->
+    <div class="left-column flex flex-column height-full justify-center items-center">
+      <h1 class="welcoming-title">Sign up for Task<span style="color: var(--pink)">Forge</span></h1>
+      <form class="form" id="signup-form" autocomplete="off">
+        <label for="name" class="label">Name</label>
+        <input type="text" name="name" id="name" class="input" required placeholder="Enter your full name" />
+        <p class="error-message" id="name-error"></p>
+
+        <label for="mobileno" class="label">Mobile No.</label>
+        <input type="tel" name="mobileno" id="mobileno" class="input" required
+          placeholder="Enter 10-digit mobile number" />
+        <p class="error-message" id="mobile-error"></p>
+
+        <label for="email" class="label">Email</label>
+        <input type="email" name="email" id="email" class="input" required placeholder="Enter your email" />
+        <p class="error-message" id="email-error"></p>
+
+        <label for="password" class="label">Password</label>
+        <div class="password-container">
+          <input type="password" name="password" id="password" class="input" required
+            placeholder="Create a strong password" />
+          <button type="button" class="toggle-password" id="toggle-password">Show</button>
+        </div>
+        <p class="password-requirements">At least 6 characters with letters and numbers</p>
+        <p class="error-message" id="password-error"></p>
+
+        <label for="confirm-password" class="label">Confirm Password</label>
+        <div class="password-container">
+          <input type="password" name="confirm-password" id="confirm-password" class="input" required
+            placeholder="Re-enter your password" />
+          <button type="button" class="toggle-password" id="toggle-confirm-password">Show</button>
+        </div>
+        <p class="error-message" id="confirm-password-error"></p>
+
+        <button type="submit" class="button regular-button pink-background cta-btn" id="sign-up-btn">
+          Sign up
+        </button>
+      </form>
+      <p class="login-prompt">
+        Already have an account?
+        <a href="./login.html" class="log-in-link">Log in</a>
+      </p>
+    </div>
+    <!-- right side -->
+    <div class="right-column"></div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+
+    toggleConfirmPassword.addEventListener('click', () => {
+      const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+      confirmPasswordInput.type = type;
+      toggleConfirmPassword.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+
+    // Form elements
+    const signupForm = document.getElementById('signup-form');
+    const nameInput = document.getElementById('name');
+    const mobileInput = document.getElementById('mobileno');
+    const emailInput = document.getElementById('email');
+
+    const nameError = document.getElementById('name-error');
+    const mobileError = document.getElementById('mobile-error');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+
+    // Form validation and submission
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Clear previous errors
+      const errorMessages = document.querySelectorAll('.error-message');
+      const inputs = document.querySelectorAll('.input');
+
+      errorMessages.forEach(error => error.classList.remove('show'));
+      inputs.forEach(input => input.classList.remove('error'));
+
+      const name = nameInput.value.trim();
+      const mobile = mobileInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      let isValid = true;
+
+      // Name validation
+      if (name.length < 2) {
+        nameError.textContent = 'Name must be at least 2 characters';
+        nameError.classList.add('show');
+        nameInput.classList.add('error');
+        isValid = false;
+      }
+
+      // Mobile validation (10 digits)
+      const mobileRegex = /^[0-9]{10}$/;
+      if (!mobileRegex.test(mobile)) {
+        mobileError.textContent = 'Please enter a valid 10-digit mobile number';
+        mobileError.classList.add('show');
+        mobileInput.classList.add('error');
+        isValid = false;
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        emailError.textContent = 'Please enter a valid email address';
+        emailError.classList.add('show');
+        emailInput.classList.add('error');
+        isValid = false;
+      }
+
+      // Password validation
+      if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters';
+        passwordError.classList.add('show');
+        passwordInput.classList.add('error');
+        isValid = false;
+      } else if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
+        passwordError.textContent = 'Password must contain both letters and numbers';
+        passwordError.classList.add('show');
+        passwordInput.classList.add('error');
+        isValid = false;
+      }
+
+      // Confirm password validation
+      if (password !== confirmPassword) {
+        confirmPasswordError.textContent = 'Passwords do not match';
+        confirmPasswordError.classList.add('show');
+        confirmPasswordInput.classList.add('error');
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Get existing users from memory (simulating database)
+      const users = JSON.parse(sessionStorage.getItem('taskforge_users') || '[]');
+
+      // Check if email already exists
+      if (users.find(u => u.email === email)) {
+        emailError.textContent = 'An account with this email already exists';
+        emailError.classList.add('show');
+        emailInput.classList.add('error');
+        return;
+      }
+
+      // Check if mobile already exists
+      if (users.find(u => u.mobile === mobile)) {
+        mobileError.textContent = 'An account with this mobile number already exists';
+        mobileError.classList.add('show');
+        mobileInput.classList.add('error');
+        return;
+      }
+
+      // Create new user
+      const newUser = {
+        id: Date.now(),
+        name: name,
+        mobile: mobile,
+        email: email,
+        password: password,
+        createdAt: new Date().toISOString()
+      };
+
+      // Add user to users array
+      users.push(newUser);
+
+      // Store in memory
+      sessionStorage.setItem('taskforge_users', JSON.stringify(users));
+
+      // Redirect to login with success message
+      window.location.href = 'login.html?registered=true';
+    });
+
+    // Clear error on input
+    nameInput.addEventListener('input', () => {
+      nameError.classList.remove('show');
+      nameInput.classList.remove('error');
+    });
+
+    mobileInput.addEventListener('input', () => {
+      mobileError.classList.remove('show');
+      mobileInput.classList.remove('error');
+    });
+
+    emailInput.addEventListener('input', () => {
+      emailError.classList.remove('show');
+      emailInput.classList.remove('error');
+    });
+
+    passwordInput.addEventListener('input', () => {
+      passwordError.classList.remove('show');
+      passwordInput.classList.remove('error');
+    });
+
+    confirmPasswordInput.addEventListener('input', () => {
+      confirmPasswordError.classList.remove('show');
+      confirmPasswordInput.classList.remove('error');
+    });
+  </script>
+</body>
+
+</html>

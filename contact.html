@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge - Contact Us</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/contact.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav max-width">
+        <h1 class="logo">Task<span>Forge</span></h1>
+        <div class="nav-buttons">
+          <button class="button blue-bg" onclick="window.location.href='dashboard.html'">
+            Dashboard
+          </button>
+          <button class="button white-bg" onclick="window.location.href='index.html'">
+            Home
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="max-width">
+        <div class="contact-container">
+          <div class="contact-header">
+            <h2 class="contact-title">Get in Touch</h2>
+            <p class="contact-subtitle">
+              We'd love to hear from you! Send us a message.
+            </p>
+          </div>
+
+          <div class="success-message" id="success-message">
+            <p>✓ Message sent successfully! We'll get back to you soon.</p>
+          </div>
+
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="name" class="label">Name</label>
+              <input type="text" id="name" class="input" placeholder="Your full name" required />
+              <p class="error-text" id="name-error">Please enter your name</p>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="label">Email</label>
+              <input type="email" id="email" class="input" placeholder="your.email@example.com" required />
+              <p class="error-text" id="email-error">
+                Please enter a valid email
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="label">Message</label>
+              <textarea id="message" class="textarea" placeholder="Write your message here..." required></textarea>
+              <p class="error-text" id="message-error">
+                Message must be at least 10 characters
+              </p>
+            </div>
+
+            <button type="submit" class="button submit-btn pink-bg">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="max-width">
+        <p class="footer-text">
+          © 2025 TaskForge. Built with focus and dedication.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="./js/contact.js"></script>
+</body>
+
+</html>
